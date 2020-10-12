@@ -73,7 +73,7 @@ namespace Bicep.LanguageServer.Handlers
                 case FunctionSymbol function when result.Origin is FunctionCallSyntax functionCall:
                     // it's not possible for a non-function call syntax to resolve to a function symbol
                     // but this simplifies the checks
-                    return GetFunctionMarkdown(function, functionCall, result.Context.Compilation.GetSemanticModel());
+                    return GetFunctionMarkdown(function, functionCall, result.Context.Compilation.GetEntrypointSemanticModel());
 
                 default:
                     return null;

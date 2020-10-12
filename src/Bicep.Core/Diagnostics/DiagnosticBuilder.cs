@@ -235,6 +235,16 @@ namespace Bicep.Core.Diagnostics
                 "BCP040",
                 $"String interpolation is not supported for keys on objects of type \"{type}\". Permissible properties include {ToQuotedString(validUnspecifiedProperties)}.");
 
+            public ErrorDiagnostic ExpectedModuleIdentifier() => new ErrorDiagnostic(
+                TextSpan,
+                "BCP041",
+                "Expected a module identifier at this location.");
+
+            public ErrorDiagnostic ExpectedModulePathString() => new ErrorDiagnostic(
+                TextSpan,
+                "BCP042",
+                "Expected a module path string.");
+
             public ErrorDiagnostic InvalidExpression() => new ErrorDiagnostic(
                 TextSpan,
                 "BCP043",
@@ -355,6 +365,12 @@ namespace Bicep.Core.Diagnostics
                 "BCP066",
                 $"Function \"{functionName}\" is not valid at this location. It can only be used in resource declarations.");
 
+            public Diagnostic UnableToOpenFile(string fileName, string exceptionMessage) => new Diagnostic(
+                TextSpan,
+                DiagnosticLevel.Error,
+                "BCP067",
+                $"Loading file \"{fileName}\" failed with message \"{exceptionMessage}\".");
+
             public ErrorDiagnostic ExpectedResourceTypeString() => new ErrorDiagnostic(
                 TextSpan,
                 "BCP068",
@@ -431,7 +447,7 @@ namespace Bicep.Core.Diagnostics
                 "BCP078",
                 $"The property \"{propertyName}\" requires a value of type \"{expectedType}\", but none was supplied.");
 
-            public ErrorDiagnostic CyclicSelfReference() => new ErrorDiagnostic(
+            public ErrorDiagnostic CyclicExpressionSelfReference() => new ErrorDiagnostic(
                 TextSpan,
                 "BCP079",
                 "This expression is referencing its own declaration, which is not allowed.");
@@ -457,6 +473,36 @@ namespace Bicep.Core.Diagnostics
                 warnInsteadOfError ? DiagnosticLevel.Warning : DiagnosticLevel.Error,
                 "BCP083",
                 $"The type \"{type}\" does not contain property \"{badProperty}\". Did you mean \"{suggestedProperty}\"?");
+
+            public ErrorDiagnostic UnableToFindPathForModule() => new ErrorDiagnostic(
+                TextSpan,
+                "BCP084",
+                "Unable to find file path for module.");
+
+            public ErrorDiagnostic ErrorOccurredLoadingModule(string failureMessage) => new ErrorDiagnostic(
+                TextSpan,
+                "BCP085",
+                $"An error occurred loading the module. Received failure \"{failureMessage}\".");
+
+            public ErrorDiagnostic ModulePathInterpolationUnsupported() => new ErrorDiagnostic(
+                TextSpan,
+                "BCP086",
+                "String interpolation is unsupported for specifying the module path.");
+
+            public ErrorDiagnostic ModulePathCouldNotBeResolved(string modulePath, string parentPath) => new ErrorDiagnostic(
+                TextSpan,
+                "BCP087",
+                $"Module \"{modulePath}\" could not be resolved relative to \"{parentPath}\".");
+
+            public ErrorDiagnostic CyclicModuleSelfReference() => new ErrorDiagnostic(
+                TextSpan,
+                "BCP088",
+                "This module references its own declaring file, which is not allowed.");
+
+            public ErrorDiagnostic CyclicModule(IEnumerable<string> cycle) => new ErrorDiagnostic(
+                TextSpan,
+                "BCP089",
+                $"The module is involved in a cycle (\"{string.Join("\" -> \"", cycle)}\").");
         }
 
         public static DiagnosticBuilderInternal ForPosition(TextSpan span)

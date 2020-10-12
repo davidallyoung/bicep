@@ -41,7 +41,7 @@ namespace Bicep.LangServer.IntegrationTests
             var lineStarts = TextCoordinateConverter.GetLineStarts(dataSet.Bicep);
 
             var symbolReferences = SyntaxAggregator.Aggregate(
-                compilation.ProgramSyntax,
+                compilation.SyntaxTreeGrouping.EntryPoint.ProgramSyntax,
                 new List<SyntaxBase>(),
                 (accumulated, node) =>
                 {
@@ -104,7 +104,7 @@ namespace Bicep.LangServer.IntegrationTests
             var lineStarts = TextCoordinateConverter.GetLineStarts(dataSet.Bicep);
 
             var nonHoverableNodes = SyntaxAggregator.Aggregate(
-                compilation.ProgramSyntax,
+                compilation.SyntaxTreeGrouping.EntryPoint.ProgramSyntax,
                 new List<SyntaxBase>(),
                 (accumulated, node) =>
                 {
